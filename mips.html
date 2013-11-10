@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Mips Simulator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel = "stylesheet"type="text/css" href= "css/bootstrap.css">
+    <link rel = "stylesheet"type="text/css" href= "css/custom.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/custom.js"></script>
+    <script type="text/javascript" src="js/defineCode.js"></script>
+    <script type="text/javascript" src="js/datapath.js"></script>
+    <script type="text/javascript" src="js/onClick.js"></script>
+
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
+
+      .hero-unit {
+        margin-bottom: 0px; 
+        padding-bottom: 10px;
+        border-style:solid;
+        border-width:1px;
+        border-color: #222222;
+        -webkit-box-shadow: 0px 1px 2px;
+      }
+
+      .border{
+        border: 1px solid gray;
+        margin-left: 0px;
+      }
+
+     #memoryTable{
+        height: 858px;
+        overflow: auto;
+     }
+     
+     #registerTable{
+        overflow-x:auto;
+     }
+
+     #traceTable{
+        margin-left: 22px;
+        margin-bottom: 20px;
+        overflow: auto;
+     }
+
+      .sidebar-nav p{
+        padding: 10px 10px 10px 10px;
+      }
+
+      .row-fluid{
+        margin-top: 20px;
+      }
+
+      .well{
+        position: fixed;
+      }
+
+      .btn{
+        margin: 10px 10px 10px 10px;
+      }
+
+      textarea{
+        width: 230px;
+      }
+
+
+      @media (max-width: 980px) {
+        /* Enable use of floated navbar text */
+        .navbar-text.pull-right {
+          float: none;
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <div class="alert alert-info clarify">
+            Don't forget that blue means zero and red means one
+          </div>
+          <div class = "begin">
+            <p class = "brand">Welcome to the mips simulator</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <p>Please write your code here</p>
+            </br>
+            <textarea rows="15" class ="code" autofocus></textarea>
+            <button class = "btn btn-primary" onclick = "drawTable(); splitCode();">Simulate</button>
+            <div id = "tablespace"></div>
+          </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span9">
+          <div class="hero-unit">
+            <svg>
+               <defs>
+                <marker id="se_marker_end_svg_22" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_1" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_34" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_2" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_35" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_3" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_35" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_4" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_36" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_5" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_36" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_7" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_38" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_8" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_37" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_9" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_39" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_10" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_39" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_12" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_41" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_13" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_47" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_15" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_78" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_19" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_83" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_26" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_88" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_31" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_84" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_32" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_62" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_33" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_93" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_40" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_93" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_48" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_70" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_49" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_108" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_52" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_111" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_53" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_105" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_61" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <pattern height="100" width="100" y="0" x="0" patternUnits="userSpaceOnUse" id="gridpattern">
+                 <image height="100" width="100" y="0" x="0" id="svg_113"/>
+                </pattern>
+                <marker id="se_marker_end_svg_195" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_14" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_199" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_18" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_199" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_42" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_201" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_43" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_201" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_44" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_210" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_45" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_210" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_46" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_219" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_73" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_219" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_92" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_223" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_99" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_223" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_101" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_225" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_107" d="m100,50l-100,40l30,-40l-30,-40l100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_end_svg_227" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <circle id="svg_110" r="30" cx="50" cy="50" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_227" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_114" d="m0,50l100,40l-30,-40l30,-40l-100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker id="se_marker_start_svg_229" markerUnits="strokeWidth" orient="auto" viewBox="0 0 100 100" markerWidth="5" markerHeight="5" refX="50" refY="50">
+                 <path id="svg_115" d="m0,50l100,40l-30,-40l30,-40l-100,40z" fill="#000000" stroke="#000000" stroke-width="10"/>
+                </marker>
+                <marker refY="50" refX="50" markerHeight="5" markerWidth="5" viewBox="0 0 100 100" orient="auto" markerUnits="strokeWidth" id="se_marker_end_svg_160">
+                 <path stroke-width="10" stroke="#000000" fill="#000000" d="m100,50l-100,40l30,-40l-30,-40l100,40z" id="svg_50"/>
+                </marker>
+                <marker refY="50" refX="50" markerHeight="5" markerWidth="5" viewBox="0 0 100 100" orient="auto" markerUnits="strokeWidth" id="se_marker_end_svg_202">
+                 <path stroke-width="10" stroke="#000000" fill="#000000" d="m100,50l-100,40l30,-40l-30,-40l100,40z" id="svg_51"/>
+                </marker>
+                <marker refY="50" refX="50" markerHeight="5" markerWidth="5" viewBox="0 0 100 100" orient="auto" markerUnits="strokeWidth" id="se_marker_end_svg_204">
+                 <path stroke-width="10" stroke="#000000" fill="#000000" d="m100,50l-100,40l30,-40l-30,-40l100,40z" id="svg_94"/>
+                </marker>
+                <marker refY="50" refX="50" markerHeight="5" markerWidth="5" viewBox="0 0 100 100" orient="auto" markerUnits="strokeWidth" id="se_marker_end_svg_216">
+                 <path stroke-width="10" stroke="#000000" fill="#000000" d="m100,50l-100,40l30,-40l-30,-40l100,40z" id="svg_96"/>
+                </marker>
+                <marker refY="50" refX="50" markerHeight="5" markerWidth="5" viewBox="0 0 100 100" orient="auto" markerUnits="strokeWidth" id="se_marker_start_svg_216">
+                 <circle stroke-width="10" stroke="#000000" fill="#000000" cy="50" cx="50" r="30" id="svg_97"/>
+                </marker>
+                <pattern height="100" width="100" y="0" x="0" patternUnits="userSpaceOnUse" id="gridpattern">
+                 <image height="100" width="100" y="0" x="0"/>
+                </pattern>
+                <marker refY="50" refX="50" markerHeight="5" markerWidth="5" viewBox="0 0 100 100" se_type="mcircle" orient="auto" markerUnits="strokeWidth" id="se_marker_start_svg_221">
+                 <circle stroke-width="10" stroke="#0000ff" fill="#0000ff" cy="50" cx="50" r="30"/>
+                </marker>
+               </defs>
+               <g>
+                <title>Layer 1</title>
+                <path id="svg_128" d="m357.33334,262l435.99997,0l-0.66663,100.66666" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#0000ff" fill="#000000"/>
+                <path id="svg_137" d="m356.66666,272.66666l422.00003,-0.66666l0,89.33334" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#0000ff" fill="#000000"/>
+                <path fill="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" fill-opacity="0" d="m304.01401,444l-6.01401,0l0,224l574,0l0,-258l-12.69598,0" id="svg_229" marker-start="url(#se_marker_start_svg_229)" stroke="#000000"/>
+                <path stroke="#0000ff" id="svg_130" d="m347.20346,186.10745l26.79654,0l0,-27.36835l-179.33299,-0.73878l0,303.99962l83.13857,-0.73978l-0.68698,-18.49152" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" fill="none"/>
+                <path stroke="#000000" marker-end="url(#se_marker_end_svg_160)" id="svg_160" d="m649.41699,144l49.58301,0l0,-91l-680,0l0,309l17.7083,0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" fill="none"/>
+                <path marker-end="url(#se_marker_end_svg_204)" id="svg_204" d="m201.33333,257l0,-220l379.99998,0l0,110l23,0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000000" fill="none"/>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_173" y="246.66667" x="249.33334" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Instruction [31-26]</text>
+                <path transform="rotate(90 525.611 535.37)" fill-opacity="0" fill="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m480.16699,514.59802l90.88501,0l0,0c11.90601,0 21.55902,9.30096 21.55902,20.77002c0,11.47498 -9.65302,20.77399 -21.55902,20.77399l-90.88501,0l0,0c-11.90601,0 -21.556,-9.29901 -21.556,-20.77399c0,-11.46906 9.64999,-20.77002 21.556,-20.77002z" id="svg_162" stroke="#000000"/>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="515.17064" y="495.83609" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" id="svg_163">0</text>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="516.17063" y="516.16941" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" id="svg_183">1</text>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="516.3347" y="545.1616" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" id="svg_184">2</text>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="515.33333" y="571.66667" id="svg_186" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">4</text>
+                <text fill="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="525.33333" y="593.66667" id="svg_192" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" stroke="#000000">2 1 0</text>
+                <text font-weight="bold" fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="533.50397" y="538.83608" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" id="svg_182">Mux</text>
+                <path stroke="#0000ff" fill="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m357.33401,249.66702l86.681,0l-0.65701,391.33298l89.30899,0l0,-39.07001" id="svg_215" fill-opacity="0"/>
+                <path fill="none" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m309.33301,597.33301l0,56.66699l252,0l-0.66602,-29.33301l31.33301,0" id="svg_223" marker-start="url(#se_marker_start_svg_223)" marker-end="url(#se_marker_end_svg_223)"/>
+                <ellipse fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" cx="355.33334" cy="520.66666" rx="20" ry="25.33333" id="svg_106"/>
+                <path fill="#000000" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m201.33299,522l-0.66599,34l224.666,0l0,-16l78,0" id="svg_201" fill-opacity="0" marker-start="url(#se_marker_start_svg_201)" marker-end="url(#se_marker_end_svg_201)"/>
+                <path fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m376,522l47.677,0l0,-329.33298l9.65601,0" id="svg_108" marker-end="url(#se_marker_end_svg_108)" stroke="#000000"/>
+                <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_131" y="126.66667" x="151.33333" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Add</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_167" y="258.66667" x="250" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">000000</text>
+                <ellipse fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" cx="458.33333" cy="192.77778" id="svg_100" rx="21.66667" ry="27.44445" stroke="#000000"/>
+                <rect fill="none" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="40.66667" y="324.66667" width="30.5" height="79.5" id="svg_6"/>
+                <rect fill="none" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="98.66667" y="350" width="88.66666" height="99.63768" id="svg_11" stroke="#000000"/>
+                <text fill="#000000" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="142.66667" y="446" id="svg_16" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" font-weight="bold" stroke-width="0">Instruction Memory</text>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="56.66667" y="366.66667" id="svg_17" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" font-weight="bold">PC</text>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="131.33334" y="366" id="svg_20" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">Read Address</text>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="149.33333" y="404" id="svg_21" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">Instruction [31-0]</text>
+                <line fill="none" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="188" y1="400.66667" x2="200.73665" y2="400.66667" id="svg_22" marker-end="url(#se_marker_end_svg_22)"/>
+                <line fill="none" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="201.33333" y1="520.66665" x2="201.33333" y2="256.66562" id="svg_23" stroke="#000000"/>
+                <rect fill="none" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="305.33333" y="329.99998" width="112.00001" height="130.66668" id="svg_24" stroke="#000000"/>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="394.66667" y="456" id="svg_25" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" font-weight="bold">Registers</text>
+                <path transform="rotate(90 276.163 415.533)" fill-opacity="0" fill="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m256.71899,405.039l38.88602,0l0,0c5.09399,0 9.224,4.69901 9.224,10.49301c0,5.797 -4.13,10.495 -9.224,10.495l-38.88602,0l0,0c-5.09399,0 -9.22299,-4.698 -9.22299,-10.495c0,-5.79401 4.129,-10.49301 9.22299,-10.49301z" id="svg_27" stroke="#000000"/>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="276" y="397.33334" id="svg_28" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">0</text>
+                <text transform="rotate(-90 275.336 414.828)" font-weight="bold" fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="275.33333" y="418" id="svg_29" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">Mux</text>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="276" y="439.99999" id="svg_30" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">1</text>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="286.66667" y1="417.33333" x2="302.68055" y2="417.33333" id="svg_34" marker-end="url(#se_marker_end_svg_34)"/>
+                <text id="svg_168" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="355.83854" x="249.33333" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">00000</text>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="201.33333" y1="347.33333" x2="304.03463" y2="347.33333" id="svg_35" marker-end="url(#se_marker_end_svg_35)" marker-start="url(#se_marker_start_svg_35)"/>
+                <text id="svg_169" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="384.5" x="226.66405" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">00000</text>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="201.31601" y1="375.99999" x2="304.01731" y2="375.99999" marker-end="url(#se_marker_end_svg_36)" marker-start="url(#se_marker_start_svg_36)" id="svg_36"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="247.33333" y1="376.66667" x2="247.33333" y2="396" id="svg_37" marker-start="url(#se_marker_start_svg_37)"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="247.33333" y1="396" x2="262" y2="396" id="svg_38" marker-end="url(#se_marker_end_svg_38)"/>
+                <text id="svg_170" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="447.16145" x="230.66926" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">00000</text>
+                <line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="201.33333" y1="438.66667" x2="264" y2="438.66667" id="svg_39" marker-start="url(#se_marker_start_svg_39)" marker-end="url(#se_marker_end_svg_39)" stroke="#000000"/>
+                <line fill="none" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="70.66667" y1="362.66667" x2="96.07882" y2="362.66667" id="svg_41" marker-end="url(#se_marker_end_svg_41)"/>
+                <line fill="none" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="417.29393" y1="362.66667" x2="624.70607" y2="362.66667" marker-end="url(#se_marker_end_svg_47)" id="svg_47" stroke="#000000"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="628" y1="342.66665" x2="628" y2="372.00756" id="svg_65"/>
+                <line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="628" y1="371.99999" x2="647.87987" y2="391.87986" id="svg_66" stroke="#000000"/>
+                <line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="647.33333" y1="391.99999" x2="627.95704" y2="411.37629" id="svg_67" stroke="#000000"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="628" y1="410.66286" x2="628" y2="440.00377" id="svg_68"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="677.33334" y1="363.33332" x2="677.33334" y2="420.01567" id="svg_69"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="678" y1="363.33332" x2="628" y2="342.66665" id="svg_71"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="628" y1="440" x2="678" y2="420" id="svg_72"/>
+                <rect fill="none" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="721.00001" y="363.51448" width="88.66666" height="99.63768" stroke="#000000" id="svg_74"/>
+                <line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="677.99307" y1="411.99998" x2="718.00694" y2="411.99998" marker-end="url(#se_marker_end_svg_78)" id="svg_78" stroke="#000000"/>
+                <path transform="rotate(90 849.333 409.369)" fill-opacity="0" fill="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m829.89001,398.875l38.88599,0l0,0c5.09399,0 9.224,4.69901 9.224,10.49301c0,5.797 -4.13,10.495 -9.224,10.495l-38.88599,0l0,0c-5.09399,0 -9.22302,-4.698 -9.22302,-10.495c0,-5.79401 4.12903,-10.49301 9.22302,-10.49301z" stroke="#000000" id="svg_79"/>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="849.1708" y="391.16927" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" id="svg_80">1</text>
+                <text transform="rotate(-90 848.508 409.336)" font-weight="bold" fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="848.50414" y="412.5026" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" id="svg_81">Mux</text>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="849.1708" y="433.83593" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" id="svg_82">0</text>
+                <line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="810.65972" y1="391.33332" x2="836.00694" y2="391.33332" marker-end="url(#se_marker_end_svg_83)" id="svg_83" stroke="#000000"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="696" y1="412" x2="696" y2="476" id="svg_84" marker-start="url(#se_marker_start_svg_84)"/>
+                <line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="695.33333" y1="476.66666" x2="820.66841" y2="476.66666" id="svg_86" stroke="#000000"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="820.66667" y1="476" x2="820.66667" y2="428.85954" id="svg_87"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="820.66667" y1="429.33333" x2="835.33334" y2="429.33333" marker-end="url(#se_marker_end_svg_88)" id="svg_88"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="117.018" y1="77.33145" x2="117.018" y2="106.67236" id="svg_54"/>
+                <line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="117.018" y1="106.66478" x2="136.89787" y2="126.54465" stroke="#000000" id="svg_55"/>
+                <line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="136.35134" y1="126.66478" x2="116.97504" y2="146.04108" stroke="#000000" id="svg_56"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="117.018" y1="145.32766" x2="117.018" y2="174.66856" id="svg_57"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="166.35134" y1="97.99812" x2="166.35134" y2="154.68047" id="svg_58"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="167.018" y1="97.99812" x2="117.018" y2="77.33145" id="svg_59"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="117.018" y1="174.66479" x2="167.018" y2="154.66479" id="svg_60"/>
+                <path fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m82.6667,362.66699l-0.6667,-274.66699c11.1111,0 22.222,0 33.333,0" id="svg_62" marker-end="url(#se_marker_end_svg_62)"/>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="94" y="166.66667" id="svg_63" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">4</text>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="99.33334" y1="163.33334" x2="114" y2="163.33334" marker-end="url(#se_marker_end_svg_38)" id="svg_64"/>
+                <path fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m166.66701,123.3333l264.66597,0l0,-25.3333l171.33401,0" id="svg_70" marker-end="url(#se_marker_end_svg_70)"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="498.53048" y1="108.66478" x2="498.53048" y2="138.00569" id="svg_75"/>
+                <line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="498.53048" y1="137.99811" x2="518.41035" y2="157.87799" stroke="#000000" id="svg_76"/>
+                <line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="517.86381" y1="157.99812" x2="498.48751" y2="177.37441" stroke="#000000" id="svg_77"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="498.53048" y1="176.66099" x2="498.53048" y2="206.0019" id="svg_85"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="547.86381" y1="129.33145" x2="547.86381" y2="186.0138" id="svg_89"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="548.53047" y1="129.33145" x2="498.53047" y2="108.66478" id="svg_90"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="498.53048" y1="205.99812" x2="548.53048" y2="185.99812" id="svg_91"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="431.33333" y1="117.33333" x2="496.21956" y2="117.33333" id="svg_93" marker-start="url(#se_marker_start_svg_93)" marker-end="url(#se_marker_end_svg_93)"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="480.66668" y1="192.66666" x2="495.33335" y2="192.66666" marker-end="url(#se_marker_end_svg_38)" id="svg_102"/>
+                <line id="svg_178" y2="527.33333" x2="326.66667" y1="516" x1="315.33334" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000000" fill="none"/>
+                <line fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="200.66666" y1="521.33333" x2="332.66833" y2="521.33333" id="svg_105" marker-end="url(#se_marker_end_svg_105)" stroke="#000000"/>
+                <ellipse stroke="#0000ff" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" cx="333.33333" cy="248.4096" id="svg_109" rx="24" ry="75.37569"/>
+                <line stroke="#000000" fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="202" y1="249.33334" x2="307.33569" y2="249.33334" id="svg_111" marker-end="url(#se_marker_end_svg_111)"/>
+                <ellipse fill="none" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" cx="616.66667" cy="625.86666" id="svg_112" rx="22.66667" ry="27.2" stroke="#0000ff"/>
+                <text fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="56" y="386.66667" id="svg_118" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">0</text>
+                <path fill="none" stroke-width="1.5" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m640,628l11.508,0l0,-196.66699" id="svg_120" stroke="#0000ff"/>
+                <path fill="none" stroke="#0000ff" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m552.33331,214.00003l0,27.33331c0,0 23.33313,5.99991 23.33331,-13.33331c0.00018,-19.33328 -23.33331,-14 -23.33331,-14z" id="svg_121"/>
+                <path stroke="#0000ff" id="svg_104" d="m341.66699,321l16.33301,0l0,8" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" fill="none"/>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_150" y="350" x="340.66667" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Read Register 1</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_154" y="366.66667" x="390.66667" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Read Data 1</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="9" id="svg_132" y="161.33333" x="534" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Result</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="9" id="svg_133" y="152" x="535.33333" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">ALU</text>
+                <text id="svg_134" font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="187.83333" x="513.33073" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Add</text>
+                <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_135" y="188.66667" x="458.66667" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Shift</text>
+                <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_136" y="198.66667" x="458.66667" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Left 2</text>
+                <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_138" y="252.33333" x="333" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#0000ff">Control</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_139" y="176" x="357" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#0000ff">RegDst</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_140" y="196.66667" x="367" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#0000ff">Branch</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_141" y="258.66667" x="380" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#0000ff">MemRead</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_142" y="271" x="381.33334" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#0000ff">MemtoReg</text>
+                <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_143" y="282" x="374.66666" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#0000ff">ALUOp</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_144" y="294.33334" x="378.33333" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#0000ff">MemWrite</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_145" y="306" x="370" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#0000ff">ALUSrc</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_146" y="319.33333" x="368" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#0000ff">RegWrite</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_147" y="378" x="660.66667" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#0000ff">Signal</text>
+                <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_148" y="622" x="618" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#0000ff">ALU</text>
+                <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_149" y="632" x="616.66667" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#0000ff">Control</text>
+                <text id="svg_151" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="378.50521" x="340.66666" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Read Register 2</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_152" y="420" x="337.33333" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Write Register</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_153" y="448.66667" x="330" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Write Data</text>
+                <text id="svg_155" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="412.49479" x="389.32812" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Read Data 2</text>
+                <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_156" y="516.66667" x="356" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Sign</text>
+                <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_157" y="528" x="356" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Extend</text>
+                <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_158" y="394.66666" x="660" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">ALU</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="9" id="svg_159" y="415.33333" x="653.33333" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">ALU Result</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="9" id="svg_161" y="414.66666" x="738.66667" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Address</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="9" id="svg_164" y="440" x="744" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Write Data</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="9" id="svg_165" y="394" x="787.33333" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Read Data</text>
+                <text font-weight="bold" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="9" id="svg_166" y="459.33333" x="778.66667" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">Data Memory</text>
+                <text id="svg_177" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="517.83333" x="240.0026" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Instruction [15-0]</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_171" y="530.66666" x="250" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">0000 0000 0000 0000</text>
+                <text id="svg_172" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="606.49445" x="237.00002" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">00000</text>
+                <text id="svg_174" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="345.16667" x="250.66927" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Instruction [25-21]</text>
+                <text id="svg_175" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="373.83334" x="251.33594" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Instruction [20-16]</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_176" y="436" x="230" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">[15-11]</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_179" y="514" x="316.66666" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">16</text>
+                <line id="svg_180" y2="527.66666" x2="404.33334" y1="516.33333" x1="393.00001" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000000" fill="none"/>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_181" y="514.66667" x="393.33333" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">32</text>
+                <text id="svg_126" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="594.49739" x="237.32813" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Instruction [5-0]</text>
+                <path fill="none" stroke="#000000" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m418,408.66699l65.33301,-0.66699l0,82l19.33398,0" id="svg_195" marker-end="url(#se_marker_end_svg_195)"/>
+                <line fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x1="424" y1="512" x2="503.33613" y2="512" id="svg_199" marker-start="url(#se_marker_start_svg_199)" marker-end="url(#se_marker_end_svg_199)"/>
+                <path fill="none" stroke="#0000ff" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m349.33301,308.66699l84,-0.66699l0,308l82.66699,0l0,-15.33301" id="svg_205"/>
+                <ellipse fill="none" stroke="#0000ff" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" cx="358.66666" cy="597.33335" rx="20" ry="25.33333" id="svg_207"/>
+                <text fill="#0000ff" stroke="#0000ff" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="358" y="594.66667" id="svg_208" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" font-weight="bold">Shift</text>
+                <text fill="#0000ff" stroke="#0000ff" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="358" y="606" id="svg_209" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" font-weight="bold">Control</text>
+                <path fill="#000000" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" fill-opacity="0" d="m201.33299,556.66699l-0.66599,40l135.33299,0" id="svg_210" marker-start="url(#se_marker_start_svg_210)" marker-end="url(#se_marker_end_svg_210)"/>
+                <path fill="#000000" stroke="#0000ff" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" fill-opacity="0" d="m379.33301,596.66699l8.66699,0l0,41.33301l137.33301,0l-0.66602,-35.33301" id="svg_212"/>
+                <text fill="#0000ff" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="381.33333" y="246.33333" id="svg_214" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">Immediate</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="553.16146" x="239.33594" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000" id="svg_217">Instruction [10-6]</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="565.833" x="234.00002" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000" id="svg_218">00000</text>
+                <path fill="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" fill-opacity="0" d="m307.33301,522l0,46l194.66699,0" id="svg_219" marker-start="url(#se_marker_start_svg_219)" marker-end="url(#se_marker_end_svg_219)" stroke="#000000"/>
+                <path fill="none" stroke="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m547.33301,536.66699l34.66699,-0.66699l0,-106l44,0" id="svg_225" marker-end="url(#se_marker_end_svg_225)"/>
+                <path fill="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" fill-opacity="0" d="m720,436.66699l-61.185,-0.66699l-0.67297,20l-174.14203,0" id="svg_227" marker-end="url(#se_marker_end_svg_227)" stroke="#000000" marker-start="url(#se_marker_start_svg_227)"/>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_116" y="210.33334" x="375" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#0000ff">Unsigned</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_117" y="234" x="378.66666" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#0000ff">Loadtype</text>
+                <path id="svg_191" fill-opacity="0" fill="#000000" stroke-width="null" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" d="m582.55597,122.22797l90.88501,0l0,0c11.90601,0 21.55908,9.30103 21.55908,20.77005c0,11.47501 -9.65308,20.77402 -21.55908,20.77402l-90.88501,0l0,0c-11.90601,0 -21.55597,-9.29901 -21.55597,-20.77402c0,-11.46902 9.64996,-20.77005 21.55597,-20.77005z" stroke="#000000" transform="rotate(90 628 143)"/>
+                <text id="svg_193" fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="617.00658" y="104.50015" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">0</text>
+                <text id="svg_194" fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="617.00657" y="127.50535" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">1</text>
+                <text id="svg_196" fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="615.99876" y="150.49754" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">2</text>
+                <text id="svg_197" fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="615.99739" y="176.50261" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve">4</text>
+                <text id="svg_198" fill="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="626.99739" y="197.83594" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" stroke="#000000">2 1 0</text>
+                <text id="svg_200" font-weight="bold" fill="#000000" stroke="#000000" stroke-width="0" stroke-dasharray="null" stroke-linejoin="null" stroke-linecap="null" x="638.99616" y="144.50014" font-size="10" font-family="serif" text-anchor="middle" xml:space="preserve" transform="rotate(-90 639 141)">Mux</text>
+                <path marker-end="url(#se_marker_end_svg_202)" id="svg_202" d="m549,155l9,0l0,-33l47,0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#000000" fill="none"/>
+                <text id="svg_211" xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" y="34.50261" x="377.00261" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#0000ff" fill="#000000">Instruction [23-0]</text>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_213" y="46" x="379" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#000000">0000 0000 0000 0000 0000 0000</text>
+                <path marker-start="url(#se_marker_start_svg_216)" marker-end="url(#se_marker_end_svg_216)" id="svg_216" d="m583,363l0,-191l22,0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke="#000000" fill="none"/>
+                <text xml:space="preserve" text-anchor="middle" font-family="serif" font-size="10" id="svg_95" y="222" x="370.66667" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="0" stroke="#000000" fill="#0000ff">Jump</text>
+                <path fill-opacity="0" id="svg_98" d="m352,200l80.66666,0l-0.66666,21.33334l119.33331,0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#0000ff" fill="#000000"/>
+                <path stroke="#0000ff" fill-opacity="0" id="svg_119" d="m356.66666,212.67563l72,-0.67563l-0.66666,81.07623l308,0l0,69.59042" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" fill="#000000"/>
+                <path stroke="#0000ff" id="svg_125" d="m358,236.6738l132.66666,-0.6738l-0.66666,49.18716l276,-0.6738l0,77.48663" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" fill="#000000"/>
+                <path id="svg_187" d="m355.33334,284l108.66666,0l0,399.33331l152.66669,-0.66663l0,-29.33337" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#0000ff" fill="#000000"/>
+                <path id="svg_189" d="m352.66666,296l376.00003,0c0,22 0,44 0,66" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#0000ff" fill="#000000"/>
+                <path id="svg_190" d="m356.66666,224.66666l143.33334,-0.66666l0,100.66666l127.33331,-0.66666l-0.66663,-113.33334" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#0000ff" fill="#000000"/>
+                <path id="svg_206" d="m678,376l15.33331,0l-0.66663,-140l-74.66669,0l0,-28.66667" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#0000ff" fill="#000000"/>
+                <path stroke="#0000ff" marker-start="url(#se_marker_start_svg_221)" id="svg_221" d="m692.66663,254.66666l-151.33331,-0.66666l0,-20.66666l10.57349,0" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" fill="#000000"/>
+                <path id="svg_224" d="m576,225.33334l60.66669,0l0,-16.66669" fill-opacity="0" stroke-linecap="null" stroke-linejoin="null" stroke-dasharray="null" stroke-width="null" stroke="#0000ff" fill="#000000"/>
+               </g>
+            </svg>
+          </div>
+          <div class="row-fluid">
+              <div id = "traceTable" class="span10 border">
+              </div>
+              <div id = "registerTable" class="span5 border">
+              </div>
+              <div id = "memoryTable" class="span5 border">
+              </div>
+          </div><!--/row-->
+
+        </div><!--/span-->
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>&copy; Mips Simulator 2013</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+
+  </body>
+</html>
